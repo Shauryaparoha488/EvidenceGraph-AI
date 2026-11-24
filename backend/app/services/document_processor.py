@@ -3,7 +3,7 @@ import os
 import re
 from pathlib import Path
 from typing import List, Dict, Any, Optional
-import fitz  # PyMuPDF
+import pymupdf as fitz
 import docx
 
 class DocumentProcessor:
