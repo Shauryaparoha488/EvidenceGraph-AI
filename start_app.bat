@@ -3,15 +3,17 @@ echo ===================================================
 echo       STARTING EVIDENCEGRAPH AI PLATFORM
 echo ===================================================
 
-set "PATH=C:\Users\shaur\OneDrive\Documents\node-v20.18.1-win-x64;%PATH%"
+set "PYTHON_EXE=C:\Users\shaur\AppData\Local\Programs\Python\Python312\python.exe"
+set "NODE_PATH=C:\Users\shaur\OneDrive\Documents\node-v20.18.1-win-x64"
+set "PATH=%NODE_PATH%;%PATH%"
 
 echo [*] Launching FastAPI Backend on http://localhost:8000 ...
-start "EvidenceGraph Backend" cmd /k "cd /d C:\Users\shaur\OneDrive\Documents\EvidenceGraph-AI\backend && python app\main.py"
+start "EvidenceGraph Backend" cmd /k "cd /d C:\Users\shaur\OneDrive\Documents\EvidenceGraph-AI\backend && "%PYTHON_EXE%" -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload"
 
 echo [*] Launching React Vite Frontend on http://localhost:5173 ...
-start "EvidenceGraph Frontend" cmd /k "set PATH=C:\Users\shaur\OneDrive\Documents\node-v20.18.1-win-x64;%%PATH%% && cd /d C:\Users\shaur\OneDrive\Documents\EvidenceGraph-AI\frontend && npm run dev"
+start "EvidenceGraph Frontend" cmd /k "set PATH=%NODE_PATH%;%%PATH%% && cd /d C:\Users\shaur\OneDrive\Documents\EvidenceGraph-AI\frontend && npm run dev"
 
-timeout /t 3 /nobreak >nul
+timeout /t 4 /nobreak >nul
 
 echo [*] Opening EvidenceGraph AI in your browser...
 start http://localhost:5173

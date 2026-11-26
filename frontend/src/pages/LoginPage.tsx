@@ -24,16 +24,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSwitchToRegister, onSucc
       login(data.access_token, data.user);
       onSuccess();
     } catch (err: any) {
-      // If user doesn't exist, try auto-registering the demo user
-      if (email === 'researcher@evidencegraph.ai') {
-        try {
-          const regData = await authApi.register(email, password, 'Senior AI Researcher');
-          login(regData.access_token, regData.user);
-          onSuccess();
-          return;
-        } catch (e2) {}
+      if (err?.code === 'ERR_NETWORK' || !err?.response) {
+        setError('Cannot connect to backend server. Please make sure the backend is running on http://localhost:8000 (run start_app.bat).');
+      } else {
+        setError(err?.response?.data?.detail || 'Invalid email or password.');
       }
-      setError(err?.response?.data?.detail || 'Invalid email or password.');
     } finally {
       setLoading(false);
     }

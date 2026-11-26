@@ -31,6 +31,16 @@ def register(user_in: UserRegister, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(user)
 
+    # Automatically initialize a default research workspace for the new user
+    from app.models.project import Project
+    default_proj = Project(
+        user_id=user.id,
+        title="Primary Research Workspace",
+        description="Default workspace for multi-document evidence investigation."
+    )
+    db.add(default_proj)
+    db.commit()
+
     token = create_access_token(user.id)
     return Token(access_token=token, token_type="bearer", user=UserResponse.model_validate(user))
 

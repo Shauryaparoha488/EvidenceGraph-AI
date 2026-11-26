@@ -30,7 +30,11 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onSwitchToLogin, onS
       login(data.access_token, data.user);
       onSuccess();
     } catch (err: any) {
-      setError(err?.response?.data?.detail || 'Registration failed.');
+      if (err?.code === 'ERR_NETWORK' || !err?.response) {
+        setError('Cannot connect to backend server. Please make sure the backend is running on http://localhost:8000 (run start_app.bat).');
+      } else {
+        setError(err?.response?.data?.detail || 'Registration failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
